@@ -3,13 +3,13 @@
 발동 조건:
 - 파일 칸네리 레코드 HMAC/GCM 인증 실패 (CanaryTamperedError)
 - 무결성 기준선 서명 불일치 (BaselineTamperedError)
-- 마스터칸네리 래핑 해제 실패 (MasterCanaryTamperedError)
+- MASTER CANARY 래핑 해제 실패 (MasterCanaryTamperedError)
 - 랜섬웨어 확산 징후 (다수 파일 동시 TAMPERED)
 
 대응 단계 (자동 수행):
   1. 격리 (Quarantine)  — 감염/변조 의심 파일을 .quarantine/ 로 이동, 0600
   2. 봉쇄 (Lockdown)    — 디렉터리 쓰기 권한을 일시 제한(모니터링 모드)
-  3. 회전 (Rotate)      — 마스터칸네리 rotate → 새 시드 세대
+  3. 회전 (Rotate)      — MASTER CANARY rotate → 새 시드 세대
   4. 재칸네리 (Re-canary) — 클린 스냅샷에서 파일을 복원하고 새 시드로 재보호
   5. 감사 (Audit)       — 전 과정을 서명된 감사 로그에 기록
 """
@@ -142,7 +142,7 @@ class PhantomFallback:
         new_epoch = self.master.rotate()
         self.audit.record("phantom.rotate", {"new_epoch": new_epoch,
                                              "fingerprint": self.master.public_fingerprint()})
-        inc.actions.append(f"마스터칸네리 회전 → epoch {new_epoch}")
+        inc.actions.append(f"MASTER CANARY 회전 → epoch {new_epoch}")
         inc.stages.append(STAGE_ROTATE)
         return new_epoch
 

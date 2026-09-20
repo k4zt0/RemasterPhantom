@@ -1,4 +1,4 @@
-"""Master 에이전트 — 마스터칸네리와 TLS 자료 보호 담당."""
+"""Master 에이전트 — MASTER CANARY와 TLS 자료 보호 담당."""
 
 from __future__ import annotations
 
@@ -18,7 +18,7 @@ class MasterAgent:
 
     def protect_tls(self, private_key_pem: bytes, session_keys: bytes,
                     pinned_cert_der: bytes | None = None) -> TLSProtectionBundle:
-        """TLS 개인키/세션키/고정 인증서를 마스터칸네리로 래핑한다."""
+        """TLS 개인키/세션키/고정 인증서를 MASTER CANARY로 래핑한다."""
         bundle = self.master.wrap_tls_material(private_key_pem, session_keys,
                                                pinned_cert_der)
         self.master.root_dir.mkdir(parents=True, exist_ok=True)
@@ -49,7 +49,7 @@ class MasterAgent:
 
     def rotate_with_advice(self) -> int:
         epoch = self.master.rotate()
-        self.advisor.advise(f"마스터칸네리 회전 완료 — epoch {epoch}",
+        self.advisor.advise(f"MASTER CANARY 회전 완료 — epoch {epoch}",
                             context={"epoch": epoch})
         return epoch
 

@@ -1,8 +1,8 @@
-"""마스터칸네리 — 루트 오브 트러스트 + TLS 자료 보호.
+"""MASTER CANARY — 루트 오브 트러스트 + TLS 자료 보호.
 
-마스터칸네리는 시스템 전체의 신뢰 뿌리다.
-1. 모든 파일 칸네리 시드(master_seed)를 마스터칸네리로 감싼다.
-2. TLS 개인키·세션 자료·인증서 고정(pin) 정보를 마스터칸네리 키로 암호화해
+MASTER CANARY는 시스템 전체의 신뢰 뿌리다.
+1. 모든 파일 칸네리 시드(master_seed)를 MASTER CANARY로 감싼다.
+2. TLS 개인키·세션 자료·인증서 고정(pin) 정보를 MASTER CANARY 키로 암호화해
    저장한다. 외부 침입자가 디스크의 TLS 자료를 훔쳐가도 쓸모없게 만든다.
 3. 칸네리 회전(rotate) 시 새 시드를 파생하고 이전 시드는 즉시 파기한다.
 
@@ -35,7 +35,7 @@ class MasterCanaryError(Exception):
 
 
 class MasterCanaryTamperedError(Exception):
-    """마스터칸네리 무결성 붕괴 — 최고 단계 사고."""
+    """MASTER CANARY 무결성 붕괴 — 최고 단계 사고."""
 
 
 @dataclass
@@ -142,7 +142,7 @@ class MasterCanary:
     # ---- TLS 자료 보호 ----
     def wrap_tls_material(self, private_key_pem: bytes, session_keys: bytes,
                           pinned_cert_der: bytes | None = None) -> TLSProtectionBundle:
-        """TLS 개인키·세션키·고정 인증서 지문을 마스터칸네리 키로 래핑한다."""
+        """TLS 개인키·세션키·고정 인증서 지문을 MASTER CANARY 키로 래핑한다."""
         epoch = self.rotation_epoch()
         key = self.derive_tls_key(epoch)
         aes = AESGCM(key)
@@ -167,7 +167,7 @@ class MasterCanary:
             return pk, sk
         except Exception as e:
             raise MasterCanaryTamperedError(
-                f"TLS 자료 래핑 해제 실패 — 마스터칸네리 불일치 또는 침입 의심: {e}"
+                f"TLS 자료 래핑 해제 실패 — MASTER CANARY 불일치 또는 침입 의심: {e}"
             ) from e
 
     def verify_pinned_cert(self, cert_der: bytes, bundle: TLSProtectionBundle) -> bool:
