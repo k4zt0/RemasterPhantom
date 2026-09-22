@@ -19,7 +19,7 @@ from .agents.orchestrator import build_default
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="remasterphantom",
-                                     description="칸네리 기반 파일 시그니처 보호 에이전트")
+                                     description="카나리 기반 파일 시그니처 보호 에이전트")
     parser.add_argument("--root", default="./rp_state", help="상태/키 디렉터리")
     parser.add_argument("--no-llm", action="store_true", help="LLM 로드 생략 (규칙 폴리백)")
     parser.add_argument("--model", default=None, help="HF 모델 ID")

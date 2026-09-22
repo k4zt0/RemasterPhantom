@@ -1,4 +1,4 @@
-"""Phantom 에이전트 — 칸네리 무결성 붕괴 시 폴리백 대응 총괄."""
+"""Phantom 에이전트 — 카나리 무결성 붕괴 시 폴리백 대응 총괄."""
 
 from __future__ import annotations
 
@@ -19,7 +19,7 @@ class PhantomAgent:
 
     def respond_canary_breach(self, err: CanaryTamperedError,
                               suspect_files: list[str | Path]) -> PhantomIncident:
-        """칸네리 붕괴 → LLM에게 사고 해석을 맡기고 폴리백을 수행한다."""
+        """카나리 붕괴 → LLM에게 사고 해석을 맡기고 폴리백을 수행한다."""
         self.advisor.advise(f"canary tampered: {err}",
                             context={"files": [str(f) for f in suspect_files]})
         return self.fallback.handle_canary_tampered(err, suspect_files)

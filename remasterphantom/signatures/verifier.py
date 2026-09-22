@@ -84,7 +84,7 @@ class IntegrityVerifier:
         payload = json.dumps(raw, sort_keys=True).encode()
         expected_mac = hmac.new(self.hmac_key, payload, hashlib.sha256).hexdigest()
         if not hmac.compare_digest(mac, expected_mac):
-            # 기준선이 변조됨 — 칸네리 무결성과 동일한 급의 사고다.
+            # 기준선이 변조됨 — 카나리 무결성과 동일한 급의 사고다.
             raise BaselineTamperedError("무결성 기준선 서명이 일치하지 않습니다. 변조 가능성.")
         self._baseline = raw
 

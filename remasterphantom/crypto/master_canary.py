@@ -1,10 +1,10 @@
 """MASTER CANARY — 루트 오브 트러스트 + TLS 자료 보호.
 
 MASTER CANARY는 시스템 전체의 신뢰 뿌리다.
-1. 모든 파일 칸네리 시드(master_seed)를 MASTER CANARY로 감싼다.
+1. 모든 파일 카나리 시드(master_seed)를 MASTER CANARY로 감싼다.
 2. TLS 개인키·세션 자료·인증서 고정(pin) 정보를 MASTER CANARY 키로 암호화해
    저장한다. 외부 침입자가 디스크의 TLS 자료를 훔쳐가도 쓸모없게 만든다.
-3. 칸네리 회전(rotate) 시 새 시드를 파생하고 이전 시드는 즉시 파기한다.
+3. 카나리 회전(rotate) 시 새 시드를 파생하고 이전 시드는 즉시 파기한다.
 
 저장은 macOS Keychain을 우선하고, 불가 시 0600 권한 파일로 폴리백한다.
 """
@@ -121,7 +121,7 @@ class MasterCanary:
         return hkdf.derive(root)
 
     def derive_file_canary_seed(self, epoch: int = 0) -> bytes:
-        """파일 칸네리 계층용 시드. epoch로 회전 세대를 구분한다."""
+        """파일 카나리 계층용 시드. epoch로 회전 세대를 구분한다."""
         return self._derive(b"file-canary-seed" + epoch.to_bytes(8, "big"))
 
     def derive_tls_key(self, epoch: int = 0) -> bytes:
@@ -177,12 +177,12 @@ class MasterCanary:
         return hmac_mod.compare_digest(hashlib.sha256(cert_der).hexdigest(),
                                        bundle.pinned_cert_sha256)
 
-    # ---- 칸네리 회전 (Phantom 프로토콜의 재구성 단계에서 사용) ----
+    # ---- 카나리 회전 (Phantom 프로토콜의 재구성 단계에서 사용) ----
     def rotate(self) -> int:
         """루트 시드를 재생성하고 epoch를 올린다. 이전 키는 메모리에서 즉시 파기.
 
         주의: rotate() 후에는 이전 epoch으로 래핑된 자료를 열 수 없다.
-        상위(Phantom 폴리백)가 먼저 모든 파일을 새 시드로 재칸네리해야 한다.
+        상위(Phantom 폴리백)가 먼저 모든 파일을 새 시드로 재카나리해야 한다.
         """
         old_epoch = self.rotation_epoch()
         new_root = secrets.token_bytes(32)

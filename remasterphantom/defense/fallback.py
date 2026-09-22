@@ -1,7 +1,7 @@
-"""Phantom 프로토콜 — 칸네리 무결성 붕괴 시 폴리백 대응.
+"""Phantom 프로토콜 — 카나리 무결성 붕괴 시 폴리백 대응.
 
 발동 조건:
-- 파일 칸네리 레코드 HMAC/GCM 인증 실패 (CanaryTamperedError)
+- 파일 카나리 레코드 HMAC/GCM 인증 실패 (CanaryTamperedError)
 - 무결성 기준선 서명 불일치 (BaselineTamperedError)
 - MASTER CANARY 래핑 해제 실패 (MasterCanaryTamperedError)
 - 랜섬웨어 확산 징후 (다수 파일 동시 TAMPERED)
@@ -10,7 +10,7 @@
   1. 격리 (Quarantine)  — 감염/변조 의심 파일을 .quarantine/ 로 이동, 0600
   2. 봉쇄 (Lockdown)    — 디렉터리 쓰기 권한을 일시 제한(모니터링 모드)
   3. 회전 (Rotate)      — MASTER CANARY rotate → 새 시드 세대
-  4. 재칸네리 (Re-canary) — 클린 스냅샷에서 파일을 복원하고 새 시드로 재보호
+  4. 재카나리 (Re-canary) — 클린 스냅샷에서 파일을 복원하고 새 시드로 재보호
   5. 감사 (Audit)       — 전 과정을 서명된 감사 로그에 기록
 """
 
@@ -72,7 +72,7 @@ class AuditLog:
 
 
 class PhantomFallback:
-    """칸네리 붕괴 사고의 자동 폴리백 오케스트레이터."""
+    """카나리 붕괴 사고의 자동 폴리백 오케스트레이터."""
 
     def __init__(self, root: str | Path, master: MasterCanary, cipher: CanaryCipher,
                  vault: CanaryVault, audit: AuditLog, snapshot_dir: str | Path | None = None):
@@ -87,7 +87,7 @@ class PhantomFallback:
     # ---- 사고 발동 ----
     def handle_canary_tampered(self, err: CanaryTamperedError,
                                suspect_files: list[str | Path]) -> PhantomIncident:
-        """칸네리 무결성 붕괴 → 전 단계 폴리백을 순서대로 수행한다."""
+        """카나리 무결성 붕괴 → 전 단계 폴리백을 순서대로 수행한다."""
         inc = PhantomIncident(trigger=str(err), severity=SEVERITY_CRITICAL,
                               files=[str(f) for f in suspect_files])
         self.audit.record("phantom.incident", {"trigger": inc.trigger,
@@ -147,9 +147,9 @@ class PhantomFallback:
         return new_epoch
 
     def _stage_recover(self, inc: PhantomIncident, new_epoch: int) -> None:
-        """스냅샷에서 클린 파일을 복원하고 새 시드로 재칸네리한다.
+        """스냅샷에서 클린 파일을 복원하고 새 시드로 재카나리한다.
 
-        스냅샷이 없으면 클린한 남은 파일만 재칸네리한다.
+        스냅샷이 없으면 클린한 남은 파일만 재카나리한다.
         """
         new_seed_files = 0
         if self.snapshot_dir.exists():
@@ -168,9 +168,9 @@ class PhantomFallback:
                     self.cipher.encrypt_header(p, fid)
                     new_seed_files += 1
                 except CanaryTamperedError:
-                    inc.actions.append(f"재칸네리 불가(파괴): {fid}")
+                    inc.actions.append(f"재카나리 불가(파괴): {fid}")
         if new_seed_files:
-            inc.actions.append(f"재칸네리 완료: {new_seed_files}개 파일 (epoch {new_epoch})")
+            inc.actions.append(f"재카나리 완료: {new_seed_files}개 파일 (epoch {new_epoch})")
         inc.stages.append(STAGE_RECOVER)
 
     # ---- 사후 스냅샷 (평시 백업) ----

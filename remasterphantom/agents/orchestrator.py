@@ -74,7 +74,7 @@ class RemasterOrchestrator:
 
     # ---- 상위 수준 워크플로우 ----
     def arm(self, target_dir: str | Path) -> dict:
-        """보호 개시: 스캔 → 기준선 등록 → 칸네리 암호화 → 클린 스냅샷."""
+        """보호 개시: 스캔 → 기준선 등록 → 카나리 암호화 → 클린 스냅샷."""
         target = Path(target_dir)
         registered, protected = 0, 0
         for p in sorted(target.rglob("*")):

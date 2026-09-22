@@ -17,8 +17,8 @@ BASE_MODEL = "meta-llama/Llama-3.2-1B-Instruct"
 # 규칙 기반 폴리백 응답 (모델 미탑재 시에도 에이전트가 동작하게)
 _FALLBACK_ADVISORIES = {
     "ransomware": ("랜섬웨어 징후: 매직 바이트 대량 파괴. Phantom 프로토콜 발동 — "
-                   "격리→락다운→회전→재칸네리 순서로 대응하고, 감사 로그를 남기세요."),
-    "canary_tampered": ("칸네리 무결성 붕괴: 변조된 파일을 신뢰하지 말고 격리한 뒤 "
+                   "격리→락다운→회전→재카나리 순서로 대응하고, 감사 로그를 남기세요."),
+    "canary_tampered": ("카나리 무결성 붕괴: 변조된 파일을 신뢰하지 말고 격리한 뒤 "
                         "MASTER CANARY를 회전해 전체 재보호하세요."),
     "baseline_tampered": ("기준선 변조는 전면 침입 신호입니다. 즉시 락다운하고 "
                           "MASTER CANARY를 회전한 뒤 기준선을 재구성하세요."),
@@ -106,7 +106,7 @@ class LLMAdvisor:
             return _FALLBACK_ADVISORIES["baseline_tampered"]
         if "tls" in s or "래핑 해제" in s:
             return _FALLBACK_ADVISORIES["tls_breach"]
-        if "칸네리" in s or "canary" in s:
+        if "카나리" in s or "canary" in s:
             return _FALLBACK_ADVISORIES["canary_tampered"]
         if "ransomware" in s or "tampered" in s or "파괴" in s:
             return _FALLBACK_ADVISORIES["ransomware"]

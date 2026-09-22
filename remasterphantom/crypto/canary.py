@@ -1,13 +1,13 @@
-"""칸네리 기반 파일 시그니처 암호화/복호화.
+"""카나리 기반 파일 시그니처 암호화/복호화.
 
 원리:
-1. 각 파일에 대해 "칸네리 토큰"을 생성한다 — HMAC(마스터 시드, file_id || nonce).
-2. 칸네리에서 HKDF로 파일 전용 AES-256-GCM 키를 유도한다.
+1. 각 파일에 대해 "카나리 토큰"을 생성한다 — HMAC(마스터 시드, file_id || nonce).
+2. 카나리에서 HKDF로 파일 전용 AES-256-GCM 키를 유도한다.
 3. 파일 헤더(매직 바이트 영역 포함)를 암호화한다. 암호문만으로는 원본 형식을
    알 수 없으므로 랜섬웨어가 시그니처를 타깃으로 삼을 표면이 사라진다.
-4. 파일과 함께 저장되는 칸네리 레코드는 자체 HMAC으로 보호된다.
+4. 파일과 함께 저장되는 카나리 레코드는 자체 HMAC으로 보호된다.
 
-칸네리 레코드 HMAC이 어긋나는 순간 = 칸네리 무결성 붕괴 → defense.fallback의
+카나리 레코드 HMAC이 어긋나는 순간 = 카나리 무결성 붕괴 → defense.fallback의
 Phantom 프로토콜이 발동한다.
 """
 
@@ -32,24 +32,24 @@ _MARKER = b"RPC1"
 # 암호화 대상 헤더 크기: 매직 바이트(최대 오프셋 257 + 여유) 포함
 _PROTECT_HEADER_BYTES = 4096
 
-# 칸네리 상태
+# 카나리 상태
 CANARY_OK = "OK"
 CANARY_TAMPERED = "TAMPERED"
 CANARY_UNKNOWN = "UNKNOWN"
 
 
 class CanaryError(Exception):
-    """칸네리 복호화 일반 실패."""
+    """카나리 복호화 일반 실패."""
 
 
 class CanaryTamperedError(Exception):
-    """칸네리 레코드 무결성 붕괴 — Phantom 프로토콜 발동 조건."""
+    """카나리 레코드 무결성 붕괴 — Phantom 프로토콜 발동 조건."""
 
 
 @dataclass
 class CanaryRecord:
     file_id: str
-    nonce: str                # hex — 칸네리 토큰 재생성에 필요
+    nonce: str                # hex — 카나리 토큰 재생성에 필요
     header_ciphertext: str    # hex — 암호화된 파일 헤더
     gcm_tag_ok: bool = True
     created_at: float = field(default_factory=time.time)
@@ -60,7 +60,7 @@ class CanaryRecord:
 
 
 class CanaryVault:
-    """파일별 칸네리 레코드 보관소. 레코드 저장 시 HMAC 서명."""
+    """파일별 카나리 레코드 보관소. 레코드 저장 시 HMAC 서명."""
 
     def __init__(self, vault_path: str | Path, hmac_key: bytes):
         self.vault_path = Path(vault_path)
@@ -77,7 +77,7 @@ class CanaryVault:
         payload = json.dumps(raw, sort_keys=True).encode()
         expected = hmac_mod.new(self.hmac_key, payload, hashlib.sha256).hexdigest()
         if not hmac_mod.compare_digest(mac, expected):
-            raise CanaryTamperedError("칸네리 보관소 서명 불일치 — 칸네리 무결성 붕괴")
+            raise CanaryTamperedError("카나리 보관소 서명 불일치 — 카나리 무결성 붕괴")
         self._records = {k: CanaryRecord(**v) for k, v in raw.items()}
 
     def _save(self) -> None:
@@ -110,7 +110,7 @@ class CanaryVault:
 
 
 class CanaryCipher:
-    """칸네리 기반 파일 헤더 암호화/복호화 엔진."""
+    """카나리 기반 파일 헤더 암호화/복호화 엔진."""
 
     def __init__(self, master_seed: bytes, vault: CanaryVault):
         if len(master_seed) < 32:
@@ -133,7 +133,7 @@ class CanaryCipher:
         """파일 헤더(매직 바이트 포함 첫 4KB)를 AES-256-GCM으로 암호화한다.
 
         원본 헤더는 안전한 난수로 덮어쓴 뒤, 복호화에 필요한 모든 재료는
-        HMAC 보호 칸네리 레코드에 보관한다.
+        HMAC 보호 카나리 레코드에 보관한다.
         """
         p = Path(path)
         fid = file_id or str(p.resolve())
@@ -158,7 +158,7 @@ class CanaryCipher:
 
     # ---- 복호화 ----
     def decrypt_header(self, path: str | Path, file_id: str | None = None) -> CanaryRecord:
-        """칸네리 레코드를 검증한 뒤 파일 헤더를 복원한다.
+        """카나리 레코드를 검증한 뒤 파일 헤더를 복원한다.
 
         서명/HMAC 검증이 실패하면 CanaryTamperedError를 던져 상위에서
         Phantom 폴리백을 발동시킨다.
@@ -167,7 +167,7 @@ class CanaryCipher:
         fid = file_id or str(p.resolve())
         rec = self.vault.get(fid)
         if rec is None:
-            raise CanaryError(f"칸네리 레코드 없음: {fid}")
+            raise CanaryError(f"카나리 레코드 없음: {fid}")
 
         # 1) 레코드 재무결성 확인: 저장된 nonce+ct로 토큰을 재유도해 복호화 가능한지 확인
         nonce = bytes.fromhex(rec.nonce)
@@ -181,8 +181,8 @@ class CanaryCipher:
             header = aes.decrypt(nonce, stored_ct, fid.encode())
         except Exception as e:
             raise CanaryTamperedError(
-                f"칸네리 복호화 인증 실패 ({fid}) — 헤더 암호문이 변조됐거나 "
-                f"칸네리 키가 유출/변경됨: {e}"
+                f"카나리 복호화 인증 실패 ({fid}) — 헤더 암호문이 변조됐거나 "
+                f"카나리 키가 유출/변경됨: {e}"
             ) from e
 
         # 3) 원본 헤더로 복원 (헤더는 항상 _PROTECT_HEADER_BYTES 바이트로 암호화됨)
@@ -197,7 +197,7 @@ class CanaryCipher:
 
     # ---- 상태 점검 (복호화 없이) ----
     def check_integrity(self, path: str | Path, file_id: str | None = None) -> str:
-        """현재 파일의 칸네리 상태를 돌려준다."""
+        """현재 파일의 카나리 상태를 돌려준다."""
         p = Path(path)
         fid = file_id or str(p.resolve())
         rec = self.vault.get(fid)
