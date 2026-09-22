@@ -1,0 +1,145 @@
+[cfg] base=unsloth/Llama-3.2-1B-Instruct device=mps dtype=torch.bfloat16 epochs=2
+Loading weights:   0%|          | 0/146 [00:00<?, ?it/s]Loading weights: 100%|██████████| 146/146 [00:00<00:00, 4434.56it/s]
+Generating train split: 0 examples [00:00, ? examples/s]Generating train split: 23720 examples [00:00, 277537.56 examples/s]
+[data] train=22534 eval=1186
+trainable params: 11,272,192 || all params: 1,247,086,592 || trainable%: 0.9039
+Tokenizing train dataset (num_proc=4):   0%|          | 0/22534 [00:00<?, ? examples/s]Tokenizing train dataset (num_proc=4):   0%|          | 88/22534 [00:00<01:59, 188.08 examples/s]Tokenizing train dataset (num_proc=4):   2%|▏         | 537/22534 [00:00<00:18, 1186.73 examples/s]Tokenizing train dataset (num_proc=4):   6%|▌         | 1309/22534 [00:00<00:07, 2813.67 examples/s]Tokenizing train dataset (num_proc=4):   9%|▉         | 2119/22534 [00:00<00:04, 4197.68 examples/s]Tokenizing train dataset (num_proc=4):  13%|█▎        | 3030/22534 [00:00<00:03, 5534.05 examples/s]Tokenizing train dataset (num_proc=4):  17%|█▋        | 3853/22534 [00:00<00:02, 6282.98 examples/s]Tokenizing train dataset (num_proc=4):  21%|██▏       | 4827/22534 [00:01<00:02, 7264.68 examples/s]Tokenizing train dataset (num_proc=4):  26%|██▌       | 5807/22534 [00:01<00:02, 7985.93 examples/s]Tokenizing train dataset (num_proc=4):  30%|███       | 6764/22534 [00:01<00:01, 8427.02 examples/s]Tokenizing train dataset (num_proc=4):  34%|███▍      | 7675/22534 [00:01<00:03, 4430.57 examples/s]Tokenizing train dataset (num_proc=4):  38%|███▊      | 8474/22534 [00:01<00:03, 4023.11 examples/s]Tokenizing train dataset (num_proc=4):  41%|████▏     | 9321/22534 [00:02<00:02, 4766.94 examples/s]Tokenizing train dataset (num_proc=4):  46%|████▌     | 10287/22534 [00:02<00:02, 5704.89 examples/s]Tokenizing train dataset (num_proc=4):  50%|████▉     | 11261/22534 [00:02<00:01, 6576.03 examples/s]Tokenizing train dataset (num_proc=4):  54%|█████▍    | 12157/22534 [00:02<00:01, 7135.27 examples/s]Tokenizing train dataset (num_proc=4):  58%|█████▊    | 13106/22534 [00:02<00:01, 7723.80 examples/s]Tokenizing train dataset (num_proc=4):  62%|██████▏   | 14049/22534 [00:02<00:01, 8171.19 examples/s]Tokenizing train dataset (num_proc=4):  67%|██████▋   | 15025/22534 [00:02<00:00, 8595.50 examples/s]Tokenizing train dataset (num_proc=4):  71%|███████   | 16051/22534 [00:02<00:00, 8488.23 examples/s]Tokenizing train dataset (num_proc=4):  76%|███████▌  | 17018/22534 [00:02<00:00, 8799.89 examples/s]Tokenizing train dataset (num_proc=4):  80%|███████▉  | 17995/22534 [00:02<00:00, 9059.09 examples/s]Tokenizing train dataset (num_proc=4):  84%|████████▍ | 18963/22534 [00:03<00:00, 9221.63 examples/s]Tokenizing train dataset (num_proc=4):  89%|████████▊ | 19981/22534 [00:03<00:00, 8971.48 examples/s]Tokenizing train dataset (num_proc=4):  93%|█████████▎| 20934/22534 [00:03<00:00, 9122.59 examples/s]Tokenizing train dataset (num_proc=4):  97%|█████████▋| 21913/22534 [00:03<00:00, 9302.21 examples/s]Tokenizing train dataset (num_proc=4): 100%|██████████| 22534/22534 [00:03<00:00, 6260.16 examples/s]
+Building labels for train dataset (num_proc=4):   0%|          | 0/22534 [00:00<?, ? examples/s]Building labels for train dataset (num_proc=4):   4%|▍         | 1000/22534 [00:00<00:02, 9833.83 examples/s]Building labels for train dataset (num_proc=4):  22%|██▏       | 5000/22534 [00:00<00:01, 15675.61 examples/s]Building labels for train dataset (num_proc=4):  58%|█████▊    | 13139/22534 [00:00<00:00, 36292.98 examples/s]Building labels for train dataset (num_proc=4): 100%|██████████| 22534/22534 [00:00<00:00, 38254.36 examples/s]
+Truncating train dataset (num_proc=4):   0%|          | 0/22534 [00:00<?, ? examples/s]Truncating train dataset (num_proc=4):  27%|██▋       | 6175/22534 [00:00<00:00, 21627.81 examples/s]Truncating train dataset (num_proc=4):  64%|██████▎   | 14342/22534 [00:00<00:00, 41634.66 examples/s]Truncating train dataset (num_proc=4): 100%|██████████| 22534/22534 [00:00<00:00, 43790.30 examples/s]
+Dropping fully masked examples from train dataset (num_proc=4):   0%|          | 0/22534 [00:00<?, ? examples/s]Dropping fully masked examples from train dataset (num_proc=4):   9%|▉         | 2000/22534 [00:00<00:02, 8506.80 examples/s]Dropping fully masked examples from train dataset (num_proc=4): 100%|██████████| 22534/22534 [00:00<00:00, 62337.80 examples/s]
+Tokenizing eval dataset (num_proc=4):   0%|          | 0/1186 [00:00<?, ? examples/s]Tokenizing eval dataset (num_proc=4):   8%|▊         | 90/1186 [00:00<00:04, 266.99 examples/s]Tokenizing eval dataset (num_proc=4):  43%|████▎     | 507/1186 [00:00<00:00, 1407.85 examples/s]Tokenizing eval dataset (num_proc=4):  83%|████████▎ | 983/1186 [00:00<00:00, 2364.24 examples/s]Tokenizing eval dataset (num_proc=4): 100%|██████████| 1186/1186 [00:00<00:00, 1766.93 examples/s]
+Building labels for eval dataset (num_proc=4):   0%|          | 0/1186 [00:00<?, ? examples/s]Building labels for eval dataset (num_proc=4): 100%|██████████| 1186/1186 [00:00<00:00, 9635.69 examples/s]
+Truncating eval dataset (num_proc=4):   0%|          | 0/1186 [00:00<?, ? examples/s]Truncating eval dataset (num_proc=4): 100%|██████████| 1186/1186 [00:00<00:00, 10367.75 examples/s]
+Dropping fully masked examples from eval dataset (num_proc=4):   0%|          | 0/1186 [00:00<?, ? examples/s]Dropping fully masked examples from eval dataset (num_proc=4): 100%|██████████| 1186/1186 [00:00<00:00, 12100.59 examples/s]
+  0%|          | 0/5634 [00:00<?, ?it/s]/Users/kaztoray/Desktop/RemasterPhantom/.venv/lib/python3.14/site-packages/torch/utils/data/dataloader.py:759: UserWarning: 'pin_memory' argument is set as true but not supported on MPS now, device pinned memory won't be used.
+  super().__init__(loader)
+  0%|          | 1/5634 [00:16<26:29:24, 16.93s/it]  0%|          | 2/5634 [00:31<23:55:07, 15.29s/it]  0%|          | 3/5634 [00:46<23:54:59, 15.29s/it]  0%|          | 4/5634 [01:02<24:15:05, 15.51s/it]  0%|          | 5/5634 [01:17<24:22:46, 15.59s/it]  0%|          | 6/5634 [01:33<24:19:49, 15.56s/it]  0%|          | 7/5634 [01:47<23:26:54, 15.00s/it]  0%|          | 8/5634 [02:01<23:03:55, 14.76s/it]  0%|          | 9/5634 [02:15<22:29:21, 14.39s/it]  0%|          | 10/5634 [02:30<22:45:09, 14.56s/it]                                                      0%|          | 10/5634 [02:30<22:45:09, 14.56s/it]  0%|          | 11/5634 [02:44<22:54:36, 14.67s/it]  0%|          | 12/5634 [02:59<23:00:21, 14.73s/it]{'loss': '4.629', 'grad_norm': '5.301', 'learning_rate': '3e-05', 'entropy': '3.267', 'num_tokens': '1.645e+04', 'mean_token_accuracy': '0.3789', 'epoch': '0.00355'}
+Traceback (most recent call last):
+  File "/Users/kaztoray/Desktop/RemasterPhantom/scripts/train.py", line 79, in <module>
+    trainer.train()
+    ~~~~~~~~~~~~~^^
+  File "/Users/kaztoray/Desktop/RemasterPhantom/.venv/lib/python3.14/site-packages/transformers/trainer.py", line 1520, in train
+    return inner_training_loop(
+        args=args,
+    ...<2 lines>...
+        ignore_keys_for_eval=ignore_keys_for_eval,
+    )
+  File "/Users/kaztoray/Desktop/RemasterPhantom/.venv/lib/python3.14/site-packages/transformers/trainer.py", line 1602, in _inner_training_loop
+    self._run_epoch(
+    ~~~~~~~~~~~~~~~^
+        model=model,
+        ^^^^^^^^^^^^
+    ...<9 lines>...
+        steps_trained_in_current_epoch=steps_trained_in_current_epoch,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/kaztoray/Desktop/RemasterPhantom/.venv/lib/python3.14/site-packages/transformers/trainer.py", line 1842, in _run_epoch
+    tr_loss_step = self.training_step(model, inputs, num_items_in_batch)
+  File "/Users/kaztoray/Desktop/RemasterPhantom/.venv/lib/python3.14/site-packages/trl/trainer/sft_trainer.py", line 1905, in training_step
+    return super().training_step(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/Users/kaztoray/Desktop/RemasterPhantom/.venv/lib/python3.14/site-packages/transformers/trainer.py", line 2014, in training_step
+    loss = self.compute_loss(model, inputs, num_items_in_batch=num_items_in_batch)
+  File "/Users/kaztoray/Desktop/RemasterPhantom/.venv/lib/python3.14/site-packages/trl/trainer/sft_trainer.py", line 1803, in compute_loss
+    (loss, outputs) = super().compute_loss(
+                      ~~~~~~~~~~~~~~~~~~~~^
+        model, inputs, return_outputs=True, num_items_in_batch=num_items_in_batch
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/kaztoray/Desktop/RemasterPhantom/.venv/lib/python3.14/site-packages/transformers/trainer.py", line 2088, in compute_loss
+    outputs = model(**inputs)
+  File "/Users/kaztoray/Desktop/RemasterPhantom/.venv/lib/python3.14/site-packages/torch/nn/modules/module.py", line 1783, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/Users/kaztoray/Desktop/RemasterPhantom/.venv/lib/python3.14/site-packages/torch/nn/modules/module.py", line 1794, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/Users/kaztoray/Desktop/RemasterPhantom/.venv/lib/python3.14/site-packages/accelerate/utils/operations.py", line 943, in forward
+    return model_forward(*args, **kwargs)
+  File "/Users/kaztoray/Desktop/RemasterPhantom/.venv/lib/python3.14/site-packages/accelerate/utils/operations.py", line 931, in __call__
+    return convert_to_fp32(self.model_forward(*args, **kwargs))
+                           ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/Users/kaztoray/Desktop/RemasterPhantom/.venv/lib/python3.14/site-packages/torch/amp/autocast_mode.py", line 44, in decorate_autocast
+    return func(*args, **kwargs)
+  File "/Users/kaztoray/Desktop/RemasterPhantom/.venv/lib/python3.14/site-packages/peft/peft_model.py", line 2120, in forward
+    return self.base_model(
+           ~~~~~~~~~~~~~~~^
+        input_ids=input_ids,
+        ^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+        **kwargs,
+        ^^^^^^^^^
+    )
+    ^
+  File "/Users/kaztoray/Desktop/RemasterPhantom/.venv/lib/python3.14/site-packages/torch/nn/modules/module.py", line 1783, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/Users/kaztoray/Desktop/RemasterPhantom/.venv/lib/python3.14/site-packages/torch/nn/modules/module.py", line 1794, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/Users/kaztoray/Desktop/RemasterPhantom/.venv/lib/python3.14/site-packages/peft/tuners/tuners_utils.py", line 359, in forward
+    return self.model(*args, **kwargs)
+           ~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/Users/kaztoray/Desktop/RemasterPhantom/.venv/lib/python3.14/site-packages/torch/nn/modules/module.py", line 1783, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/Users/kaztoray/Desktop/RemasterPhantom/.venv/lib/python3.14/site-packages/torch/nn/modules/module.py", line 1794, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/Users/kaztoray/Desktop/RemasterPhantom/.venv/lib/python3.14/site-packages/trl/trainer/sft_trainer.py", line 329, in _chunked_ce_forward
+    loss, num_correct_tokens, entropy_sum, num_valid_tokens = _chunked_cross_entropy_loss(
+                                                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        hidden_states,
+        ^^^^^^^^^^^^^^
+    ...<7 lines>...
+        lm_head_bias=lm_head_bias,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/kaztoray/Desktop/RemasterPhantom/.venv/lib/python3.14/site-packages/trl/trainer/sft_trainer.py", line 211, in _chunked_cross_entropy_loss
+    chunk_loss, chunk_correct, chunk_entropy = torch.utils.checkpoint.checkpoint(
+                                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        _chunk,
+        ^^^^^^^
+    ...<6 lines>...
+        use_reentrant=False,
+        ^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/kaztoray/Desktop/RemasterPhantom/.venv/lib/python3.14/site-packages/torch/_compile.py", line 54, in inner
+    return disable_fn(*args, **kwargs)
+  File "/Users/kaztoray/Desktop/RemasterPhantom/.venv/lib/python3.14/site-packages/torch/_dynamo/eval_frame.py", line 1548, in _fn
+    return fn(*args, **kwargs)
+  File "/Users/kaztoray/Desktop/RemasterPhantom/.venv/lib/python3.14/site-packages/torch/utils/checkpoint.py", line 606, in checkpoint
+    return _checkpoint_impl(
+        function,
+    ...<8 lines>...
+        respect_saved_tensors_hooks=respect_saved_tensors_hooks,
+    )
+  File "/Users/kaztoray/Desktop/RemasterPhantom/.venv/lib/python3.14/site-packages/torch/utils/checkpoint.py", line 681, in _checkpoint_impl
+    gen.throw(e)
+    ~~~~~~~~~^^^
+  File "/Users/kaztoray/Desktop/RemasterPhantom/.venv/lib/python3.14/site-packages/torch/utils/checkpoint.py", line 1988, in _checkpoint_without_reentrant_generator_impl
+    yield
+  File "/Users/kaztoray/Desktop/RemasterPhantom/.venv/lib/python3.14/site-packages/torch/utils/checkpoint.py", line 678, in _checkpoint_impl
+    ret = function(*args, **kwargs)
+  File "/Users/kaztoray/Desktop/RemasterPhantom/.venv/lib/python3.14/site-packages/trl/trainer/sft_trainer.py", line 114, in _chunk
+    chunk_loss = F.nll_loss(log_p, lbl, ignore_index=-100, reduction="sum")
+  File "/Users/kaztoray/Desktop/RemasterPhantom/.venv/lib/python3.14/site-packages/torch/nn/functional.py", line 3237, in nll_loss
+    return torch._C._nn.nll_loss_nd(
+           ~~~~~~~~~~~~~~~~~~~~~~~~^
+        input,
+        ^^^^^^
+    ...<4 lines>...
+        ignore_index,
+        ^^^^^^^^^^^^^
+    )
+    ^
+RuntimeError: MPS backend out of memory (MPS allocated: 3.24 GiB, other allocations: 5.78 GiB, max allowed: 9.07 GiB). Tried to allocate 110.00 MiB on shared pool. Use PYTORCH_MPS_HIGH_WATERMARK_RATIO=0.0 to disable upper limit for memory allocations (may cause system failure).
+Exception ignored while calling deallocator <function tqdm.__del__ at 0x10cc652d0>:
+Traceback (most recent call last):
+  File "/Users/kaztoray/Desktop/RemasterPhantom/.venv/lib/python3.14/site-packages/tqdm/std.py", line 1154, in __del__
+  File "/Users/kaztoray/Desktop/RemasterPhantom/.venv/lib/python3.14/site-packages/tqdm/std.py", line 1309, in close
+  File "/Users/kaztoray/Desktop/RemasterPhantom/.venv/lib/python3.14/site-packages/tqdm/std.py", line 1502, in display
+  File "/Users/kaztoray/Desktop/RemasterPhantom/.venv/lib/python3.14/site-packages/tqdm/std.py", line 1157, in __str__
+  File "/Users/kaztoray/Desktop/RemasterPhantom/.venv/lib/python3.14/site-packages/tqdm/std.py", line 576, in format_meter
+ImportError: sys.meta_path is None, Python is likely shutting down

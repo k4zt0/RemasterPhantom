@@ -19,6 +19,8 @@ DATA_PATH = os.environ.get("DATA_PATH", "data/remasterphantom_sft.jsonl")
 OUTPUT_DIR = os.environ.get("OUTPUT_DIR", "outputs/remasterphantom-lora")
 MERGED_DIR = os.environ.get("MERGED_DIR", "outputs/RemasterPhantom-merged")
 EPOCHS = int(os.environ.get("EPOCHS", "3"))
+MAX_LENGTH = int(os.environ.get("MAX_LENGTH", "1024"))
+SAVE_STEPS = int(os.environ.get("SAVE_STEPS", "0"))  # 0이면 epoch마다 저장
 
 import torch
 from datasets import load_dataset
@@ -28,7 +30,8 @@ from trl import SFTConfig, SFTTrainer
 
 device = "mps" if torch.backends.mps.is_available() else ("cuda" if torch.cuda.is_available() else "cpu")
 dtype = torch.bfloat16 if device in ("mps", "cuda") else torch.float32
-print(f"[cfg] base={BASE_MODEL} device={device} dtype={dtype} epochs={EPOCHS}", flush=True)
+print(f"[cfg] base={BASE_MODEL} device={device} dtype={dtype} epochs={EPOCHS} "
+      f"max_length={MAX_LENGTH} save_steps={SAVE_STEPS or 'epoch'}", flush=True)
 
 tokenizer = AutoTokenizer.from_pretrained(BASE_MODEL)
 if tokenizer.pad_token is None:
@@ -52,7 +55,7 @@ lora_cfg = LoraConfig(
 model = get_peft_model(model, lora_cfg)
 model.print_trainable_parameters()
 
-sft_cfg = SFTConfig(
+sft_kwargs = dict(
     output_dir=OUTPUT_DIR,
     num_train_epochs=EPOCHS,
     per_device_train_batch_size=1,
@@ -63,15 +66,20 @@ sft_cfg = SFTConfig(
     warmup_steps=60,
     logging_steps=10,
     eval_strategy="epoch",
-    save_strategy="epoch",
     bf16=(dtype == torch.bfloat16),
-    max_length=1024,
+    max_length=MAX_LENGTH,
     packing=False,
     gradient_checkpointing=True,
     report_to="none",
     seed=42,
     dataset_num_proc=4,
 )
+if SAVE_STEPS > 0:
+    sft_kwargs.update(save_strategy="steps", save_steps=SAVE_STEPS,
+                      save_total_limit=6)
+else:
+    sft_kwargs.update(save_strategy="epoch")
+sft_cfg = SFTConfig(**sft_kwargs)
 
 trainer = SFTTrainer(model=model, args=sft_cfg,
                      train_dataset=train_ds, eval_dataset=eval_ds,

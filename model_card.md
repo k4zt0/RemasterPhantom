@@ -26,7 +26,7 @@ Llama-3.2-1B-Instruct를 파일 시그니처 방어 전문가로 LoRA 파인튜�
 ```python
 from remasterphantom.agents.base import LLMAdvisor
 advisor = LLMAdvisor("k4zt0/RemasterPhantom")
-print(advisor.advise("칸네리 무결성이 물너졌다는 신호는 무엇인가요?"))
+print(advisor.advise("칸네리 무결성이 무너너졌다는 신호는 무엇인가요?"))
 ```
 
 ## 베이스 모델
