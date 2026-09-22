@@ -68,8 +68,15 @@ jupyter notebook notebooks/train_remasterphantom.ipynb
 ```
 
 - 베이스: `meta-llama/Llama-3.2-1B-Instruct` (게이트 — `hf auth login` + 라이선스 동의 필요. 미동의 시 노트북의 비게이트 미러로 전환)
-- 데이터: `data/generate_dataset.py` → 5,880개 지시-응답 쌍 (`data/remasterphantom_sft.jsonl`)
-- 방식: LoRA (r=16, 전체 선형층) · 전체 시퀀스 SFT · bf16 · seq 1024 · 3 epoch
+- 데이터: `data/generate_dataset_v4.py` → 5,306개 지시-응답 쌍 (`data/remasterphantom_sft_v4.jsonl`, 중복 없음 + 미등록 시그니처 보정)
+- 방식: LoRA (r=16, 전체 선형층) · 전체 시퀀스 SFT · bf16 · seq 512 · 2 epoch
+
+**정확도 평가**
+
+```bash
+.venv/bin/python scripts/evaluate.py --model outputs/RemasterPhantom-v4-merged
+# 시그니처 상식 93.2% · 헤더 식별 90% · 가드레일 90% · 미등록 정직 응답 75% (105문항)
+```
 
 **예상 시간 (Apple M2 · 8GB · MPS)**
 
